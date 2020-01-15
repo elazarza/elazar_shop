@@ -1,0 +1,31 @@
+.tstep{
+    width: 400px;
+    height: 320px;
+    background-color: rgba(38, 76, 94, 0.8);
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+label{
+    display: block;
+    width: 80px;
+    text-align: left;
+}
+input, select, option{
+    display: block;
+    height: 28px;
+    width: 200px;
+}
+form div{
+    display: flex;
+    align-items: center;
+}
+input[type='submit']{
+    width: 100px;
+    height: 30px;
+    margin: auto;
+}
+#messageError{
+    height: 25px;
+}

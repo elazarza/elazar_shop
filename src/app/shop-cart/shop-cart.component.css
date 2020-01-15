@@ -1,0 +1,68 @@
+#pAndDelete{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 15px;
+}
+#deleteAll{
+    background-color: rgb(51, 51, 51);
+    padding: 3px 5px;
+    font-size: 10px;
+    border-radius: 3px;
+}
+#deleteAll:hover{
+    cursor: pointer;
+    background-color: rgb(252, 84, 55);
+}
+.divitem{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    color: rgb(19, 19, 19);
+    padding: 5px;
+    margin: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+.displayItem{
+    width: 100%;
+}
+.itemName{
+    text-align: center;
+    padding:0 5px;
+}
+.itemPriceQuantity{
+    display: flex;
+    justify-content: space-around;
+}
+.deleteItem{
+    text-align: center;
+    width: 30px;
+    font-weight: 800;
+    font-size: 20px;
+    color: rgb(61, 61, 61);
+}
+.deleteItem:hover{
+    color: tomato;
+    cursor: pointer;
+}
+#totalandbtn{
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+    border-top: 1px gray solid;
+    padding: 10px;
+}
+#totalandbtn a{
+    color: white;
+}
+#totalandbtn a:hover{
+    color: rgb(115, 202, 224);
+}
+.imgItem{
+    height: 50px;
+    width: auto;
+    margin-top: 10px;
+    margin-left: 3px;
+}

@@ -1,0 +1,5 @@
+<div id="cartCategorys" *ngIf="ifDisplay">
+    <app-shop-cart id="cart" [cart]='cart' [totalPrice]="totalPrice" [arrItems]="arrItems" (chQuantity)="changeQuantity($event)" (delItem)="deleteItem($event)"></app-shop-cart>
+    <div id="resizeCart"><div (click)="resizeCart()"></div></div>
+    <app-shop-categorys id="categorys" (addItem)="addItem($event)"></app-shop-categorys>
+</div>

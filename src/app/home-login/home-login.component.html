@@ -1,0 +1,16 @@
+<div id="btnShop" (click)="goToShop()" class='{{classBtn}}'>
+    {{buttonShop}}
+</div><br>
+
+<div id="loginform">
+    <p>Login</p>
+    <div id="displayError">{{displayError}}</div>
+    <form [formGroup]="dataLogin" (ngSubmit)="verifyLogin()">
+        <input type="email" placeholder="email" formControlName="mail"><br><br>
+        <input type="password" placeholder="password" formControlName="password"><br><br>
+        <input type="checkbox" name="keepme" id="keepme" checked="true" formControlName="keepme"><label
+            for="keepme">keep me logged in</label><br><br>
+        <input type="submit" id="loginbtn" value="Login" [disabled]="!dataLogin.valid"><br><br>
+        <div><a id="linkSignup" routerLink="/signup">Sign up</a></div>
+    </form>
+</div>

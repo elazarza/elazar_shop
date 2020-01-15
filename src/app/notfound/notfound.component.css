@@ -1,0 +1,22 @@
+#page404{
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: lightgray;
+    height: 100%;
+}
+#page404 div{
+    padding: 50px 0;
+    width: 40%;
+    background-color: rgb(236, 236, 236);
+}
+#page404 h2{
+    font-size: 90px;
+}
+#page404 h3{
+    font-size: 40px;
+}
+#page404 a{
+    color: rgb(28, 40, 68);
+}

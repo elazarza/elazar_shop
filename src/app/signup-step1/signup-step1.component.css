@@ -1,0 +1,49 @@
+.tstep{
+    width: 400px;
+    height: 320px;
+    background-color: rgba(38, 76, 94, 0.8);
+    color: white;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+label{
+    display: block;
+    width: 90px;
+    text-align: left;
+}
+input{
+    display: block;
+    height: 28px;
+    width: 200px;
+}
+form div{
+    display: flex;
+    align-items: center;
+}
+input[type='submit']{
+    width: 100px;
+    height: 30px;
+}
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+#messageError{
+    height: 25px;
+    color: tomato;
+    text-align: center;
+}
+#btnAndAlready{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+#already{
+    color: white;
+}
+#already:hover{
+    color: rgb(157, 199, 206);
+}

@@ -1,0 +1,30 @@
+<br><br>
+<div id="pAndDelete">
+    <p>YOUR CART</p>
+    <div (click)="deleteAll()" id="deleteAll" *ngIf="cart!=-1">Delete All</div>
+</div>
+
+<div>
+    <div *ngIf="cart == -1"><br> Cart empty</div>
+    <div class="divitem" *ngFor="let item of arrItems">
+        <div>
+            <img class="imgItem" src="{{GlobalyPathInto}}/products-imgs/{{item.img}}" alt="">
+        </div>
+        <div class="displayItem">
+            <div class="itemName">{{item.product_name}}</div><br>
+            <div class="itemPriceQuantity">
+                <div>{{item.price}} ₪</div>
+                <div>quantity:
+                    <select name="selectQuantity" id="selectQuantity" (change)="changeQuantity($event,item.cart_item_id)">
+                        <option value="{{x+1}}" *ngFor="let i of ' '.repeat(20).split(''), let x = index" [selected]="x+1 == item.quantity">{{x+1}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="deleteItem" title="DELETE" (click)="deleteItem(item.cart_item_id)">‎x</div>
+    </div>
+    <div id="totalandbtn">
+        <div>Total: {{totalPrice|number}} ₪</div>
+        <div><a href="/order">Order</a></div>
+    </div>
+</div>

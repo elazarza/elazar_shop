@@ -1,0 +1,10 @@
+<div id="signup">
+    <br>
+    <h2>sign up</h2><br><br>
+    <div id="onstep">
+        <div class="titleStepOn" id="titleStep1">STEP 1</div>
+        <div id="titleStep2">STEP 2</div>
+    </div>
+    <app-signup-step1 *ngIf="step == 1"></app-signup-step1>
+    <app-signup-step2 *ngIf="step == 2"></app-signup-step2>
+</div>

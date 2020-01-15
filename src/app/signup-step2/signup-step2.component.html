@@ -1,0 +1,27 @@
+<div class="tstep">
+    <form [formGroup]="dataStep2" (ngSubmit)="submitStep2()">
+        <div id="messageError"></div>
+        <div>
+            <label for="city">City</label>
+            <select name="city" id="city" formControlName="city">
+                <option value="jerusalem">ירושלים</option>
+                <option value="tel aviv">תל אביב</option>
+                <option value="haifa">חיפה</option>
+                <option value="rishon letsion">ראשון לציון</option>
+                <option value="petah tikva">פתח תקווה</option>
+                <option value="ashdod">אשדוד</option>
+                <option value="netanya">נתניה</option>
+                <option value="beer sheva">באר שבע</option>
+                <option value="holon">חולון</option>
+                <option value="bne brak">בני ברק</option>
+            </select>
+        </div><br>
+        <div><label for="adress">Adress</label><input type="text" name="adress" id="adress" formControlName="adress"
+                placeholder="ex: בן יהודה 200"></div><br>
+        <div><label for="first_name">First Name</label><input type="text" name="first_name" id="first_name"
+                formControlName="first_name" placeholder="max 20 characters"></div><br>
+        <div><label for="last_name">Last Name</label><input type="text" name="last_name" id="last_name"
+                formControlName="last_name" placeholder="max 20 characters"></div><br>
+        <div><input type="submit" value="Submit" [disabled]="!dataStep2.valid"></div>
+    </form>
+</div>

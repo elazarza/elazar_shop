@@ -1,0 +1,10 @@
+<div class="tstep">
+<form [formGroup]="dataStep1" (ngSubmit)="submitStep1()">
+    <div id="messageError">{{messageError}}</div>
+    <div><label for="idid">ID</label><input type="number" name="idid" id="idid" formControlName="user_id" placeholder="9 characters"></div><br>
+    <div><label for="email">Email</label><input type="email" name="email" id="email" formControlName="email" placeholder="ex: me@gmail.com"></div><br>
+    <div><label for="password">Password</label><input type="password" name="password" id="password" formControlName="password" placeholder="between 6 and 12 characters"></div><br>
+    <div><label for="confirm">Password confirm</label><input type="password" name="confirm" id="confirm" formControlName="confirm" placeholder="between 6 and 12 characters"></div><br>
+    <div id="btnAndAlready"><input type="submit" value="Next" [disabled]="!dataStep1.valid"><a href="/" id="already">already member?</a></div>
+</form>
+</div>

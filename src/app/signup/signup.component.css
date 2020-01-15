@@ -1,0 +1,28 @@
+#signup{
+    height: 100%;
+    background-image: url('imgs/bicycle-1872682_1920.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: white;
+    text-align: center;
+}
+#signup h2{
+    font-size: 35px;
+}
+#onstep{
+    width: 400px;
+    margin: auto;
+    margin-bottom: 2px;
+    display: flex;
+    justify-content: space-around;
+}
+#onstep div{
+    width: 200px;
+    text-align: center;
+    height: 25px;
+    padding-top: 5px;
+}
+.titleStepOn{
+    background-color: rgba(38, 76, 94, 0.8);
+}

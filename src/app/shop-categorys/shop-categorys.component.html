@@ -1,0 +1,36 @@
+<div id="categorysSearch">
+    <div id="categorys">
+        <div *ngFor="let category of categorys" id="{{category.category_id}}"
+            (click)="changeCategory(category.category_id,category.category_name)" class="category">{{category.category_name}}</div>
+    </div>
+    <form id="searchProduct" (submit)="search()">
+        <input type="search" name="search" id="search" [(ngModel)]="theSearch" placeholder="search products">
+        <input type="submit" id="btnSearch" value="S">
+    </form>
+</div>
+<h3 id="messageHere">{{messageHere}}</h3>
+<div *ngIf="categoryProducts" id="catpro">
+    
+    <div *ngFor="let product of products" class="product" (click)="popupProduct(product)">
+        <img src="{{GlobalyPathInto}}/products-imgs/{{product.img}}" alt="" class="productImg">
+        <br>
+        <div class="productPrice">{{product.price}} ₪</div>
+        <div>{{product.product_name}}</div>
+    </div>
+</div>
+<!-- popup  -->
+<div *ngIf='ifPopup' id="backgroundPopup" (click)='closePopup($event)'>
+    <div id="popup">
+        <div class="deleteCross" (click)="closePopupCross()">X</div>
+        <img src="{{GlobalyPathInto}}/products-imgs/{{productPopup.img}}" alt="" class="prodimg">
+        <div>
+            <div>{{productPopup.product_name}}</div><br>
+            <div class="prodPrice">{{productPopup.price}} ₪</div><br>
+            <div id="addquantity">
+                Quantity: &nbsp; <button class="plusminus" (click)="changeQuantity('-')">-</button>
+                <div>{{quantity}}</div><button class="plusminus" (click)="changeQuantity('+')">+</button>
+            </div><br>
+            <button (click)="addToCart(productPopup.product_id)">Add to cart</button>
+        </div>
+    </div>
+</div>

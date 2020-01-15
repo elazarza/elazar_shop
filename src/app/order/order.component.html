@@ -1,0 +1,73 @@
+<div *ngIf="ifDisplay" id="displayPageOrder">
+    <div id="cartEmpty" *ngIf="cart == -1">
+        <h2>your cart is empty</h2>
+        <h3><a href="/shop">back to shop</a></h3>
+    </div>
+    <div *ngIf="cart != -1" id="pageOrder">
+        <div id="displayCart">
+            <br>
+            <div id="titleAndSearch">
+                <p>YOUR CART</p>
+                <input type="search" name="search" id="search" placeholder="search in cart" [(ngModel)]="theSearch" (input)="searchCart()">
+            </div>
+            <div class="divitem" *ngFor="let item of arrList">
+                <div>
+                    <img class="imgItem" src="{{GlobalyPathInto}}/products-imgs/{{item.img}}" alt="">
+                </div>
+                <div class="displayItem">
+                    <div class="itemName">{{item.product_name}}</div><br>
+                    <div class="itemPriceQuantity">
+                        <div>{{item.price}} ₪</div>
+                        <div>quantity: {{item.quantity}}</div>
+                    </div>
+                </div>
+            </div>
+            <p id="nochange">NO CHANGES PERMITTED HERE</p>
+            <div id="totalandbtn">
+                <div><a href="/shop">Back to shop</a></div>
+                <div>Total: {{totalPrice|number}} ₪</div>
+            </div>
+        </div>
+        <div id="displayFormOrder">
+                <form [formGroup]="dataOrder" (ngSubmit)="submitOrder()">
+                    <h3>Order</h3><br>
+                        <div>
+                            <label for="city">City</label>
+                            <select id="selectCity" name="city" id="city" formControlName="received_city" (dblclick)="automaticCity()" title="double click to automatic filling">
+                                <option value="jerusalem">ירושלים</option>
+                                <option value="tel aviv">תל אביב</option>
+                                <option value="haifa">חיפה</option>
+                                <option value="rishon letsion">ראשון לציון</option>
+                                <option value="petah tikva">פתח תקווה</option>
+                                <option value="ashdod">אשדוד</option>
+                                <option value="netanya">נתניה</option>
+                                <option value="beer sheva">באר שבע</option>
+                                <option value="holon">חולון</option>
+                                <option value="bne brak">בני ברק</option>
+                            </select>
+                        </div><br>
+                        <div><label for="adress">Adress</label><input type="text" name="adress" id="adress"
+                                formControlName="received_adress" placeholder="ex: בן יהודה 200" (dblclick)="automaticAdress()" title="double click to automatic filling"></div><br>
+                        <div><label for="">Shipping Date</label><input type="date" name="" id="" formControlName="received_date" min="{{minDate}}" max={{maxDate}} (input)="inputDate()"></div>
+                        <p id="errorDate">{{errorDate}}</p><br>
+                        <hr><br>
+                        <p>Total to pay: {{totalPrice|number}} ₪</p><br>
+                        <div><label for="">Credit Card</label><input type="tel" maxlength="16" name="" id="" pattern="\d*" formControlName="payment_number" placeholder="16 digits"></div><br>
+                        <input id="btnSubmitOrder" type="submit" value="{{btnOrder}}" [disabled]="!dataOrder.valid || btnOrder != 'Order' || !validDate">
+                    </form>
+        </div>
+    </div>
+    <div id="popupSuccess" *ngIf="ifPopup">
+        <div>
+            <h2>YOUR PURCHASE WAS SUCCESSFUL</h2><br>
+            <h3>To download the receipt <a target="_blank" href="{{GlobalyPathInto}}/receiptPDF/{{pathPdf}}" download="d{{pathPdf}}">click here</a></h3><br><br>
+            <a href="/" id="btnThank">THANK</a>
+        </div>
+    </div>
+    <div id="popupSuccess" *ngIf="ifPopupError">
+        <div>
+            <h2>SORRY YOUR PURCHASE FAILED</h2><br>
+            <a href="/order" id="btnThank">RETURN</a>
+        </div>
+    </div>
+</div>
