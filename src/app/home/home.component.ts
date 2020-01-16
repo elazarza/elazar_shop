@@ -7,13 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  public toHomeInfo = {message:""}
+  public toHomeInfo = {message: ''};
   constructor() { }
 
   ngOnInit() {
   }
   public funcInfo(info){
-    this.toHomeInfo = info
+    this.toHomeInfo = info;
   }
 
 }

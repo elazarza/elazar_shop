@@ -16,7 +16,8 @@ import { SignupStep1Component } from './signup-step1/signup-step1.component';
 import { SignupStep2Component } from './signup-step2/signup-step2.component';
 import { ShopCartComponent } from './shop-cart/shop-cart.component';
 import { ShopCategorysComponent } from './shop-categorys/shop-categorys.component';
-import { AdminComponent } from './admin/admin.component'
+import { AdminComponent } from './admin/admin.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { AdminComponent } from './admin/admin.component'
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,22 +1,23 @@
 <div id="adminpage" *ngIf="ifDisplay">
 <div id="categorysSearch">
     <div id="categorys">
-        <div *ngFor="let category of categorys" id="{{category.category_id}}"
-            (click)="changeCategory(category.category_id,'Category '+category.category_name)" class="category">{{category.category_name}}</div>
+        <div *ngFor="let category of categorys" id="{{category.catid}}"
+            (click)="changeCategory(category.id,'Category ' + category.catname)" class="category">{{category.catname}}</div>
     </div>
-    <form id="searchProduct" (submit)="search()">
-        <input type="search" name="search" id="search" [(ngModel)]="theSearch" placeholder="search products">
-        <input type="submit" id="btnSearch" value="S">
-    </form>
+    <!-- <form id="searchProduct" (submit)="search()"> -->
+        <input type="search" name="search" id="search" [(ngModel)]="term" placeholder="search products">
+        <!-- <input type="submit" id="btnSearch" value="S"> -->
+        <button (click)="search()" id="btnSearch">S</button>
+    <!-- </form> -->
     <div id="addProduct" (click)="openPopupAdd()">+ Add product</div>
 </div>
 <h3 id="messageHere">{{messageHere}}</h3>
 <div *ngIf="categoryProducts" id="catpro">
     <div *ngFor="let product of products" class="product" >
-        <img src="{{GlobalyPathInto}}/products-imgs/{{product.img}}" alt="" class="productImg">
+        <img src="{{url}}/prodimages/{{product.img}}" alt="" class="productImg">
         <br>
         <div class="productPrice">{{product.price}} ₪</div>
-        <div>{{product.product_name}}</div>
+        <div>{{product.prodname}}</div>
         <button (click)="openPopupAdd(product)" class="btnModify">modify</button>
     </div>
 </div>
@@ -26,12 +27,12 @@
         <div class="deleteCross" (click)="closePopupAdd('blah',true)">X</div>
         <label for="addimg"><img src="{{pathImgPopup}}" alt="" class="prodimg" title="Add Image"><input type="file" name="file" id="addimg" style="display:none;" accept="image/*" (change)="imgFile($event)"></label>
         <form [formGroup]="newProduct" (ngSubmit)="addProduct()">
-            <div><label for="nameAdd">name: </label><input type="text" id="nameAdd" formControlName="product_name"></div><br>
+            <div><label for="nameAdd">name: </label><input type="text" id="nameAdd" formControlName="prodname"></div><br>
             <div><label for="priceAdd">price: </label><input type="number" id="priceAdd" value="" formControlName="price"></div><br>
             <div>
                 <label for="categoryEditAdd">Category: </label>
-                <select name="categoryEditAdd" id="categoryEdit" formControlName="category_id">
-                    <option *ngFor="let category of categorys" value="{{category.category_id}}">{{category.category_name}}</option>
+                <select name="categoryEditAdd" id="categoryEdit" formControlName="catid">
+                    <option *ngFor="let category of categorys" value="{{category.id}}">{{category.catname}}</option>
                 </select>
             </div><br>
             <br><br>

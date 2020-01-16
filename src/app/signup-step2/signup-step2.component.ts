@@ -9,19 +9,22 @@ import { SignupComponent } from '../signup/signup.component'
 })
 export class SignupStep2Component implements OnInit {
 
-  constructor( public fb : FormBuilder, public signupComponent : SignupComponent) { }
+  constructor(
+    private fb: FormBuilder,
+    private signupComponent: SignupComponent
+  ) { }
 
-  public dataStep2
+  public dataStep2;
 
   ngOnInit() {
     this.dataStep2 = this.fb.group({
-      city:["",Validators.required],
-      adress:["",[Validators.minLength(2),Validators.maxLength(20),Validators.required]],
-      first_name:["",[Validators.minLength(2),Validators.maxLength(20),Validators.required]],
-      last_name:["",[Validators.minLength(2),Validators.maxLength(20),Validators.required]]
-    })
+      city: ['', Validators.required],
+      street: ['', [Validators.minLength(2), Validators.maxLength(20), Validators.required]],
+      fname: ['', [Validators.minLength(2), Validators.maxLength(20), Validators.required]],
+      lname: ['', [Validators.minLength(2), Validators.maxLength(20), Validators.required]]
+    });
   }
-  public submitStep2(){
+  public submitStep2() {
     this.signupComponent.submitSignup(this.dataStep2.value)
   }
 

@@ -1,39 +1,38 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
-import { shopService } from '../shop.services'
+import { CommonService } from '../common.service'
 
 @Component({
   selector: 'app-shop-cart',
   templateUrl: './shop-cart.component.html',
   styleUrls: ['./shop-cart.component.css']
 })
-export class ShopCartComponent implements OnInit {
+export class ShopCartComponent {
 
-  constructor(public shopService : shopService) { }
-  @Input() cart:Number;
+  constructor(public commonService: CommonService) { }
+  @Input() cart: number;
   @Input() arrItems;
   @Input() totalPrice;
-  public cartId = -1;
-  public GlobalyPathInto = this.shopService.GlobalyPath;
   @Output() chQuantity = new EventEmitter();
   @Output() delItem = new EventEmitter();
-
-  ngOnInit() {
+  cartId = -1;
+  url = this.commonService.BASE_URL;
+ editQuant(e, id) {
+    this.chQuantity.emit({ id, quant: e.target.value })
   }
 
-  public changeQuantity(e ,id){
-    this.chQuantity.emit({cart_item_id:id,quantity:e.target.value})
+ deleteItem(data) {
+    this.delItem.emit({ id: data });
   }
 
-  public deleteItem(data){
-    this.delItem.emit({cart_item_id:data})
-  }
-
-  public deleteAll(){
-    let i = this.arrItems.length
-    let delInterval = setInterval(()=>{
-      if(i === 0 ){clearInterval(delInterval);return}
-      this.deleteItem(this.arrItems[i-1].cart_item_id)
-      i--
-    },300)
+ deleteAll() {
+    let i = this.arrItems.length;
+    const delInterval = setInterval(() => {
+      if (i === 0) {
+        clearInterval(delInterval);
+        return;
+      }
+      this.deleteItem(this.arrItems[i - 1].id);
+      i--;
+    }, 300);
   }
 }

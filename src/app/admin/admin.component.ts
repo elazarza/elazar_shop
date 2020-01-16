@@ -1,134 +1,140 @@
-import { Component, OnInit } from '@angular/core';
-import { shopService } from '../shop.services'
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonService } from '../common.service'
 import { FormBuilder, Validators } from '@angular/forms'
+import { takeUntil } from 'rxjs/operators';
+import { Subject, pipe } from 'rxjs';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
-export class AdminComponent implements OnInit {
+export class AdminComponent implements OnInit, OnDestroy {
+  private readonly destroy$ = new Subject();
 
-  constructor(public shopService: shopService, public fb: FormBuilder) { }
+  constructor(
+    private commonService: CommonService,
+    private fb: FormBuilder
+  ) { }
 
-  public categorys
-  public categoryProducts = 0
-  public products = []
+  public categorys;
+  public categoryProducts = 0;
+  public products = [];
   public ifPopup = false;
-  public theSearch = "";
+  public term = '';
   public newProduct;
-  public ifPopupAdd = false
-  public pathImgPopup = this.shopService.GlobalyPath+"/imgs/add-photo.png"
-  public imgToAdd = "no-img.png"
-  public currentProductId = -1
-  public ifDisplay = false
-  public ifModify = false
-  public messageHere = "Chose category or do a search"
-  public GlobalyPathInto = this.shopService.GlobalyPath;
+  public ifPopupAdd = false;
+  public pathImgPopup = this.commonService.BASE_URL + '/imgs/add-photo.png';
+  public imgToAdd = 'no-img.png';
+  public currentProductId = -1;
+  public ifDisplay = false;
+  public ifModify = false;
+  public messageHere = 'Chose category or do a search';
+  public url = this.commonService.BASE_URL;
 
   ngOnInit() {
 
-    this.shopService.ifToken().subscribe(
-      (res: any) => {
-        if (!res.message.admin) {
-          window.location.href = "/"
+    this.commonService.chkAuth()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        if (!res.message.isadmin) {
+          window.location.href = '/';
+        } else {
+          this.ifDisplay = true;
         }
-        else { this.ifDisplay = true }
       },
-      err => window.location.href = "/"
-    )
+        err => window.location.href = '/'
+      );
 
-    this.shopService.getcategorys().subscribe(
-      (res: any) => {
-        this.categorys = res.message
-      }, err => window.location.href = "/"
-    )
+    this.commonService.getCategorys()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        this.categorys = res.message;
+      }, err => window.location.href = '/'
+      );
 
     this.newProduct = this.fb.group({
-      product_name: ["", [Validators.minLength(2), Validators.maxLength(40), Validators.required]],
-      category_id: [, Validators.required],
+      prodname: ['', [Validators.minLength(2), Validators.maxLength(40), Validators.required]],
+      catid: [, Validators.required],
       price: [, Validators.required]
-    })
-
+    });
   }
 
-  public changeCategory(cat,catName) {
-    this.categoryProducts = cat;
-    this.shopService.getproducts({ category_id: cat }).subscribe(
-      (res: any) => {
-        this.products = res.message
-        this.messageHere = catName
-      }
-    )
+  public changeCategory(catid, catName) {
+    this.categoryProducts = catid;
+    this.commonService.getProducts({ catid })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        this.products = res.message;
+        this.messageHere = catName;
+      });
   }
 
   public search() {
     this.categoryProducts = 1
-    this.shopService.searchProduct(this.theSearch).subscribe(
-      (res: any) => {
-        this.products = res.message
-        this.messageHere = "Results for: "+this.theSearch
-        this.theSearch = "";
-      }
-    )
+    this.commonService.searchProduct(this.term)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        this.products = res.message;
+        this.messageHere = 'Results for: ' + this.term;
+        this.term = '';
+      });
   }
 
   public openPopupAdd(data = null) {
     if (data) {
-      this.newProduct.controls['product_name'].setValue(data.product_name)
-      this.newProduct.controls['category_id'].setValue(data.category_id)
-      this.newProduct.controls['price'].setValue(data.price)
-      this.pathImgPopup = this.shopService.GlobalyPath+"/products-imgs/" + data.img
-      this.imgToAdd = data.img
-      this.currentProductId = data.product_id
-      this.ifModify = true
+      this.newProduct.controls['prodname'].setValue(data.prodname);
+      this.newProduct.controls['catid'].setValue(data.catid);
+      this.newProduct.controls['price'].setValue(data.price);
+      this.pathImgPopup = this.commonService.BASE_URL + '/prodimages/' + data.img;
+      this.imgToAdd = data.img;
+      this.currentProductId = data.product_id;
+      this.ifModify = true;
     }
-    this.ifPopupAdd = true
+    this.ifPopupAdd = true;
   }
 
   public closePopupAdd(event, pass = false) {
-    if (pass || event.target.id === "backgroundPopup") {
-      this.ifPopupAdd = false
-      this.newProduct.reset()
-      this.pathImgPopup = this.shopService.GlobalyPath+"/imgs/add-photo.png"
-      this.imgToAdd = "no-img.png"
-      this.currentProductId = -1
-      this.ifModify = false
+    if (pass || event.target.id === 'backgroundPopup') {
+      this.ifPopupAdd = false;
+      this.newProduct.reset();
+      this.pathImgPopup = this.commonService.BASE_URL + '/imgs/add-photo.png';
+      this.imgToAdd = 'no-img.png';
+      this.currentProductId = -1;
+      this.ifModify = false;
     }
   }
 
   public imgFile(e) {
-    let data = new FormData();
+    const data = new FormData();
     data.append('file', e.target.files[0])
-    this.shopService.uploadImg(data).subscribe(
-      (res: any) => {
-        this.pathImgPopup = this.shopService.GlobalyPath+`/products-imgs/${res.filename}`
-        this.imgToAdd = res.filename
-      },
-      err => console.log(err)
-    )
+    this.commonService.uploadImg(data)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        this.pathImgPopup = this.commonService.BASE_URL + `/prodimages/${res.filename}`;
+        this.imgToAdd = res.filename;
+      });
   }
 
   public addProduct() {
     if (!this.ifModify) {
-      this.shopService.addProduct({ ...this.newProduct.value, img: this.imgToAdd }).subscribe(
-        (res: any) => {
-          this.changeCategory(this.newProduct.value.category_id,"Product successfully Added")
-          this.closePopupAdd("blah", true)
-        },
-        err => console.log(err)
-      )
+      this.commonService.addProduct({ ...this.newProduct.value, img: this.imgToAdd })
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(res => {
+          this.changeCategory(this.newProduct.value.catid, 'Product successfully Added')
+          this.closePopupAdd('blah', true);
+        });
+    } else {
+      this.commonService.editProd({ ...this.newProduct.value, img: this.imgToAdd, id: this.currentProductId })
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(res => {
+          this.changeCategory(this.newProduct.value.catid, 'Product successfully Added');
+          this.closePopupAdd('blah', true)
+        });
     }
-    else{
-      this.shopService.modifyProduct({ ...this.newProduct.value, img: this.imgToAdd, product_id:this.currentProductId}).subscribe(
-        (res: any) => {
-          this.changeCategory(this.newProduct.value.category_id,"Product successfully Added")
-          this.closePopupAdd("blah", true)
-        },
-        err => console.log(err)
-      )
-    }
-
   }
-
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

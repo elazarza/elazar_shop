@@ -1,116 +1,139 @@
-import { Component, OnInit } from '@angular/core';
-import { shopService } from '../shop.services'
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonService } from '../common.service'
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-shop',
   templateUrl: './shop.component.html',
   styleUrls: ['./shop.component.css']
 })
-export class ShopComponent implements OnInit {
+export class ShopComponent implements OnInit, OnDestroy {
+  private readonly destroy$ = new Subject();
 
-  constructor(public shopService: shopService) {}
+  constructor(
+    private commonService: CommonService
+  ) { }
 
-  public cart = -1
-  public arrItems = []
-  public totalPrice:Number = 0
-  public ifDisplay = false
+  public cart = -1;
+  public arrItems = [];
+  public totalPrice = 0;
+  public ifDisplay = false;
 
   ngOnInit() {
-    this.shopService.ifToken().subscribe(
-      (res:any)=>{
-        if(res.message.admin){
-          window.location.href = "/"
+    this.commonService.chkAuth()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        if (res.message.isadmin) {
+          window.location.href = '/';
+        } else {
+          this.ifDisplay = true;
         }
-        else{this.ifDisplay=true}
-      },
-      err=>window.location.href = "/"
-    )
+      });
 
-    this.shopService.getCart().subscribe(
-      (res: any) => {
-        if (res.message !== 'No results cart') {
-          this.cart = res.message[0].cart_id;
-          this.takeItems()
+    this.commonService.getCart()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        if (res.message !== 'No results') {
+          this.cart = res.message[0].cartid;
+          this.takeItems();
         }
-      },
-      err => { console.log(err) }
-    )
+      });
   }
 
   takeItems() {
-    this.shopService.getItems(this.cart).subscribe(
-      (res: any) => {
-        if(res.message === "No results!!!"){this.arrItems = []; return}
-        this.arrItems = res.message
-        let total = 0
-        for(let i = 0 ; i<res.message.length; i++){
-          total += res.message[i].price * res.message[i].quantity
+    this.commonService.getItemsForCart(this.cart)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        if (res.message === 'No results') {
+          this.arrItems = [];
+          return;
         }
-        this.totalPrice = total;
-      },
-      err => console.log(err)
-    )
+        this.arrItems = res.message;
+        // let total = 0;
+        for (const i of res.message) {
+          this.totalPrice += i.price * i.quant;
+        }
+        // for (let i = 0; i < res.message.length; i++) {
+        //   total += res.message[i].price * res.message[i].quant;
+        // }
+        // this.totalPrice = total;
+      });
   }
 
   public resizeCart() {
-    let cart = document.getElementById('cart')
-    if (cart.offsetWidth > 0) { cart.style.minWidth = "0px"; cart.style.width = '0px' }
-    else if (cart.offsetWidth <= 0) { cart.style.minWidth = "350px"; cart.style.width = '20%' }
+    const cart = document.getElementById('cart');
+    if (cart.offsetWidth > 0) {
+      cart.style.minWidth = '0px'; cart.style.width = '0px';
+    } else if (cart.offsetWidth <= 0) {
+      cart.style.minWidth = "350px"; cart.style.width = '20%';
+    }
   }
 
-  public changeQuantity(data) {
-    this.shopService.changeQuantity(data).subscribe(
-      (res: any) => {
-        this.takeItems()
-      },err =>{console.log(err)}
-    )
+  public editQuant(data) {
+    this.commonService.editQuant(data)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(res => {
+        this.takeItems();
+      });
   }
 
   public addItem(data) {
-    for(let i=0; i<this.arrItems.length; i++){
-      if(this.arrItems[i].product_id === data.product_id){
-        let newQuantity = this.arrItems[i].quantity+data.quantity
-        this.changeQuantity({cart_item_id:this.arrItems[i].cart_item_id,quantity:newQuantity})
-        this.takeItems()
-        return
+    for (const i of this.arrItems) {
+      if (this.arrItems[i].prodid === data.prodid) {
+        const newQuant = this.arrItems[i].quant + data.quant;
+        this.editQuant({ id: this.arrItems[i].id, quant: newQuant })
+        this.takeItems();
+        return;
       }
     }
+    // for (let i = 0; i < this.arrItems.length; i++) {
+    //   if (this.arrItems[i].prodid === data.prodid) {
+    //     let newQuantity = this.arrItems[i].quant + data.quant;
+    //     this.editQuant({ id: this.arrItems[i].id, quantity: newQuantity })
+    //     this.takeItems()
+    //     return;
+    //   }
+    // }
     if (this.cart === -1) {
-      this.shopService.addCart().subscribe(
-        (res: any) => {
-          this.cart = res.rere.insertId
-          this.shopService.addItem({ ...data, cart_id: res.rere.insertId }).subscribe(
-            (res: any) => {
+      this.commonService.addCart()
+        .pipe(takeUntil(this.destroy$))
+        .subscribe((res: any) => {
+          this.cart = res.res.insertId;
+          this.commonService.addItemToCart({ ...data, cartid: res.res.insertId })
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(resx => {
               this.takeItems();
-            },err => console.log(err)
-          )
-        },err => console.log(err)
-      )
-    }
-    else {
-      this.shopService.addItem({ ...data, cart_id: this.cart }).subscribe(
-        (res: any) => {
+            });
+        });
+    } else {
+      this.commonService.addItemToCart({ ...data, cartid: this.cart })
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(res => {
           this.takeItems();
-        },err => console.log(err)
-      )
+        });
     }
   }
 
-  public deleteItem(data){
-    if(this.arrItems.length <= 1){
-      this.shopService.deleteCart({cart_id:this.cart}).subscribe(
-        (res:any)=>{
-          this.cart = -1
-          this.totalPrice = 0
+  deleteItem(data) {
+    if (this.arrItems.length <= 1) {
+      this.commonService.deleteCart({ id: this.cart })
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(res => {
+          this.cart = -1;
+          this.totalPrice = 0;
           this.takeItems();
-        },err=>console.log(err)
-      )
+        });
     }
-    this.shopService.deleteItem(data).subscribe(
-      (res:any)=>{
+    this.commonService.deleteItem(data)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(res => {
         this.takeItems();
-      },err=>console.log(err)
-    )
+      });
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
 }

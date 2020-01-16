@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { shopService } from './shop.services';
-
-window.onload = () =>{
-  document.getElementById('section-center').style.height = (window.innerHeight-110) + "px";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { CommonService } from './common.service';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+window.onload = () => {
+  document.getElementById('section-center').style.height = (window.innerHeight - 110) + "px";
 }
-window.onresize = () =>{
-  document.getElementById('section-center').style.height = (window.innerHeight-110) + "px";
+window.onresize = () => {
+  document.getElementById('section-center').style.height = (window.innerHeight - 110) + "px";
 }
 
 @Component({
@@ -13,28 +14,41 @@ window.onresize = () =>{
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit, OnDestroy {
+  private readonly destroy$ = new Subject();
+  constructor(
+    private commonService: CommonService
+  ) { }
 
-  constructor(public shopService: shopService) { }
+  username = 'Please Login';
 
-  login = 'Disconnected';
-
-  ngOnInit(){
-    this.shopService.ifToken().subscribe(
-      (res:any)=>{
-        if(res.state == "success"){this.login = res.message.first_name+ ' ' + res.message.last_name}
-        else{console.log(res.message)}
-      },err =>{}
-    )
+  ngOnInit() {
+    this.commonService.chkAuth().pipe(takeUntil(this.destroy$))
+      .subscribe((res: any) => {
+        if (res.state === 'success') {
+          this.username = res.message.fname + ' ' + res.message.lname;
+        } else {
+          console.log(res.message);
+        }
+      });
   }
 
-  public ifLogin(name:any){
-    this.login = name;
+  setName(name: any) {
+    this.username = name;
   }
 
-  public disconnected(){
-    if (localStorage.getItem('Token')) { localStorage.removeItem('Token') }
-    if (sessionStorage.getItem('Token')) { sessionStorage.removeItem('Token') }
-    window.location.href = "/"
+  logOut() {
+    if (localStorage.getItem('Token')) {
+      localStorage.removeItem('Token');
+    }
+    if (sessionStorage.getItem('Token')) {
+      sessionStorage.removeItem('Token');
+    }
+    window.location.href = '/';
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

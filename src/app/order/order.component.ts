@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { shopService } from '../shop.services';
+import { CommonService } from '../common.service';
 import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
@@ -9,7 +9,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class OrderComponent implements OnInit {
 
-  constructor(public shopService:shopService, public fb:FormBuilder) { }
+  constructor(public commonService:CommonService, public fb:FormBuilder) { }
   public ifDisplay = false;
   public cart = -1;
   public arrItems = [];
@@ -27,10 +27,10 @@ export class OrderComponent implements OnInit {
   public datesProhibited = []
   public validDate = false
   public errorDate = ""
-  public GlobalyPathInto = this.shopService.GlobalyPath;
+  public GlobalyPathInto = this.commonService.BASE_URL;
 
   ngOnInit() {
-    this.shopService.ifToken().subscribe(
+    this.commonService.chkAuth().subscribe(
       (res:any)=>{
         if(res.message.admin){
           window.location.href = "/"
@@ -40,7 +40,7 @@ export class OrderComponent implements OnInit {
       err=>window.location.href = "/"
     )
 
-    this.shopService.getCart().subscribe(
+    this.commonService.getCart().subscribe(
       (res: any) => {
         if (res.message !== 'No results cart') {
           this.cart = res.message[0].cart_id;
@@ -53,13 +53,13 @@ export class OrderComponent implements OnInit {
       err => { window.location.href="/shop" }
     )
 
-    this.shopService.getUser().subscribe(
+    this.commonService.getUser().subscribe(
       (res:any)=>{
         this.user = res.message[0];
       },err => console.log(err)
     )
 
-    this.shopService.dates3().subscribe(
+    this.commonService.getoccDates().subscribe(
       (res:any)=>{
         this.datesProhibited = res.message
       },err =>{console.log(err)}
@@ -81,7 +81,7 @@ export class OrderComponent implements OnInit {
   }
 
   takeItems() {
-    this.shopService.getItems(this.cart).subscribe(
+    this.commonService.getItemsForCart(this.cart).subscribe(
       (res: any) => {
         if(res.message === "No results!!!"){this.arrItems = []; return}
         this.arrItems = res.message
@@ -108,7 +108,8 @@ export class OrderComponent implements OnInit {
     this.btnOrder = "one moment ..."
     let datenow = new Date();
     let thedatenow = datenow.toISOString().split("T")[0];
-    this.shopService.addOrder({...this.dataOrder.value,user_id:this.user.t_z,cart_id:this.cart,total_price:this.totalPrice.toFixed(2),products:this.arrItems,user_name:this.user.first_name+" "+this.user.last_name,datenow:thedatenow}).subscribe(
+    this.commonService.addOrder({
+      ...this.dataOrder.value,user_id:this.user.t_z,cart_id:this.cart,total_price:this.totalPrice.toFixed(2),products:this.arrItems,user_name:this.user.first_name+" "+this.user.last_name,datenow:thedatenow}).subscribe(
       (res:any)=>{
         if(res.state = "success"){
           this.ifPopup=true;
