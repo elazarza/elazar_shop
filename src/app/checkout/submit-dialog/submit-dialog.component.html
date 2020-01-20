@@ -1,0 +1,16 @@
+<div *ngIf="!data.error">
+    <div class="text-center">
+        <h1>Your order is complete.</h1>
+        <h3>You can download the receipt
+            <a target="_blank" href="{{url}}/receipts/{{pdf}}" > here</a>
+        </h3>
+        <button mat-raised-button color="primary" [routerLink]="'/'" (click)="close()" >Return to shop</button>
+    </div>
+</div>
+
+<div  *ngIf="data.error">
+    <div>
+        <h2>Sorry, there was an error and your order is not complete.</h2><br>
+        <button (click)="close()" mat-raised-button color="primary">Return</button>
+    </div>
+</div>

@@ -2,48 +2,50 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
 import { SignupComponent } from './signup/signup.component';
 import { ShopComponent } from './shop/shop.component';
-import { OrderComponent } from './order/order.component';
-import { NotfoundComponent } from './notfound/notfound.component';
-import { HomeLoginComponent } from './home-login/home-login.component';
-import { HomeShopComponent } from './home-shop/home-shop.component';
-import { HomeInfoComponent } from './home-info/home-info.component';
+import { CheckoutComponent } from './checkout/checkout.component';
+import { LoginComponent } from './login/login.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { SignupStep1Component } from './signup-step1/signup-step1.component';
-import { SignupStep2Component } from './signup-step2/signup-step2.component';
-import { ShopCartComponent } from './shop-cart/shop-cart.component';
-import { ShopCategorysComponent } from './shop-categorys/shop-categorys.component';
+import { CartComponent } from './shop/sections/cart/cart.component';
+import { BrowseComponent } from './shop/sections/browse/browse.component';
 import { AdminComponent } from './admin/admin.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './material/material.module';
+import { FooterComponent } from './footer/footer.component';
+import { ProductDialogComponent } from './shop/sections/browse/product-dialog/product-dialog.component';
+import { SubmitDialogComponent } from './checkout/submit-dialog/submit-dialog.component';
+import { AdminProductDialogComponent } from './admin/admin-product-dialog/admin-product-dialog.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    SignupComponent,
-    ShopComponent,
-    OrderComponent,
-    NotfoundComponent,
-    HomeLoginComponent,
-    HomeShopComponent,
-    HomeInfoComponent,
-    SignupStep1Component,
-    SignupStep2Component,
-    ShopCartComponent,
-    ShopCategorysComponent,
-    AdminComponent
-  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    MaterialModule
   ],
+  exports: [
+    MaterialModule
+  ],
+  declarations: [
+    AppComponent,
+    SignupComponent,
+    ShopComponent,
+    CheckoutComponent,
+    LoginComponent,
+    CartComponent,
+    BrowseComponent,
+    AdminComponent,
+    FooterComponent,
+    ProductDialogComponent,
+    SubmitDialogComponent,
+    AdminProductDialogComponent
+  ],
+  entryComponents: [ProductDialogComponent, SubmitDialogComponent, AdminProductDialogComponent],
   providers: [],
   bootstrap: [AppComponent]
 })

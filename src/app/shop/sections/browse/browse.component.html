@@ -1,0 +1,32 @@
+<mat-toolbar class="d-flex row justify-content-between">
+    <mat-toolbar-row   *ngIf="categorys !== 'No results'; else noresults">
+        <button mat-raised-button color="primary" *ngFor="let category of categorys"
+            (click)="selectCat(category.id, category.catname)" >{{category.catname}}
+        </button>
+
+        <mat-form-field style="margin-left: 100px">
+            <input matInput  [(ngModel)]="term" (input)="search()" placeholder="Search here..." style="font-size: 1rem;">
+        </mat-form-field>
+
+        <ng-template #noresults>
+            <mat-toolbar-row>
+                No Categories
+            </mat-toolbar-row>
+        </ng-template>
+
+
+    </mat-toolbar-row>
+
+</mat-toolbar>
+
+<mat-toolbar color="accent" style="opacity: .5;" >{{txt}}</mat-toolbar>
+
+<div *ngIf="showProds" class="prodShow">
+    <div *ngFor="let product of products" class="card ml-2" (click)="openModal(product)">
+        <img class="card-img-top" style="width: 100px;" src="{{url + product.img}}" alt="{{product.prodname}}">
+        <div class="card-body">
+            <h5 class="card-title">{{product.prodname}}</h5>
+            <p class="card-text">Price: {{product.price}} ₪</p>
+          </div>
+    </div>
+</div>

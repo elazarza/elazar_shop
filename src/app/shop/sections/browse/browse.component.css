@@ -1,0 +1,14 @@
+
+
+
+button {
+    margin-left: 10px;
+}
+.card {
+    background-color: rgb(218, 215, 241);
+}
+.prodShow {
+    display: flex; 
+    justify-content: center;
+    margin-top:20px
+}

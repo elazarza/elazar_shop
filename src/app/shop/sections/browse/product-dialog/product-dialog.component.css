@@ -1,0 +1,17 @@
+
+
+.dets{
+    display: flex;
+}
+
+.price {
+    font-size: 1.5rem;
+}
+.name {
+    color: rgb(35, 35, 95);
+    font-size: 2rem;
+    font-weight: bold;
+}
+.quant {
+    min-width: unset;
+}

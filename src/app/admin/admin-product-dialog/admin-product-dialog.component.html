@@ -1,0 +1,47 @@
+<div>
+    <div class="close" (click)="close()">
+        <mat-icon>clear</mat-icon>
+    </div>
+
+
+
+
+<div class="d-flex flex-column mb-5">
+    <img *ngIf="img" src="{{url + img}}" class="prodimg">
+
+    <button mat-raised-button color="primary" (click)="fileInput.click()" style="width:200px">
+        <mat-icon>camera_enhance</mat-icon> {{img ? 'Change Image' : 'Upload Image'}}
+    </button>
+    <input type="file" #fileInput hidden accept="image/*" (change)="uploadImg($event)">
+</div>
+    <div class="row justify-content-center p-0 m-0">
+
+        <div class="col-12 col-lg-6 col-xl-6 row d-flex">
+            <form [formGroup]="form" (ngSubmit)="closeModal()">
+
+                <div class="col-12 d-flex align-items-center justify-content-start">
+                    <mat-form-field class="w-100">
+                        <input matInput type="text" formControlName="prodname" placeholder="Product Name" #prodname>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-12 d-flex align-items-center justify-content-start">
+                    <mat-form-field class="w-100">
+                        <input matInput type="number" formControlName="price" placeholder="Product Price" #price>
+                    </mat-form-field>
+                </div>
+
+                <div class="col-12 d-flex align-items-center justify-content-start">
+                    <mat-form-field>
+                        <mat-label>Category</mat-label>
+                        <mat-select #catid formControlName="catid">
+                            <mat-option *ngFor="let cat of categorys" [value]="cat.id">
+                                {{cat.catname}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+
+                <button type="submit" mat-raised-button color="primary">Submit</button>
+            </form>
+        </div>

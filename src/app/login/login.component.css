@@ -1,0 +1,46 @@
+
+.error {
+   margin-top: 5px;
+    text-align: center;
+    font-size: 14px;
+    color: rgb(255, 47, 47);
+}
+.form{
+    border: 1px solid black;
+    padding: 5rem;
+    text-align: center;
+    background-color: rgba(243, 243, 243, 0.8);
+    margin-top: 2%;
+    
+}
+.intro{
+    border: 1px solid black;
+    padding: 5rem;
+    text-align: center;
+    background-color: rgba(243, 243, 243, 0.8);
+    
+}
+.info{
+    border: 1px solid black;
+    padding: 5rem;
+    text-align: center;
+    background-color: rgba(243, 243, 243, 0.8);
+    margin-left:30px;
+    margin-top: 2%;
+}
+ p{
+    font-size: 20px;
+    color: rgb(19, 65, 105);
+}
+
+.number {
+    font-size: 30px;
+    color: rgb(85, 88, 136);
+    font-weight: bold;
+}
+
+
+
+
+
+

@@ -1,10 +1,95 @@
-<div id="signup">
-    <br>
-    <h2>sign up</h2><br><br>
-    <div id="onstep">
-        <div class="titleStepOn" id="titleStep1">STEP 1</div>
-        <div id="titleStep2">STEP 2</div>
+<div class="d-flex justify-content-center flex-column">
+
+    <mat-toolbar color="accent" style="opacity: .5;width: 50%; margin: auto">SIGN UP</mat-toolbar>
+
+    <div class=" form d-flex row justify-content-center align-items-center" *ngIf="step === 1; step2">
+        <form [formGroup]="form1" (ngSubmit)="chkForm1(id.value, email.value, pass.value, conf.value)">
+            <div class="row justify-content-center">
+
+                <div class="col-12 col-lg-6 col-xl-6 row d-flex">
+
+                    <div class="col-12 d-flex align-items-center justify-content-start">
+                        <mat-form-field class="w-100" >
+                            <input matInput type="number" placeholder="ID" formControlName="id" #id>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-12 d-flex align-items-center justify-content-start">
+                        <mat-form-field class="w-100">
+                            <input matInput type="email" email placeholder="Email" formControlName="email" #email>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-12 d-flex align-items-center justify-content-start">
+                        <mat-form-field class="w-100">
+                            <input matInput type="password" placeholder="Password [6 - 12 characters]" #pass
+                                formControlName="password" >
+                        </mat-form-field>
+                    </div>
+
+
+                    <div class="col-12 d-flex align-items-center justify-content-start">
+                        <mat-form-field class="w-100">
+                            <input matInput type="password" placeholder="Confirm password" formControlName="confirm" #conf
+                                >
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-12 d-flex align-items-center justify-content-center ">
+                        <button mat-raised-button color="primary" type="submit">Continue</button>
+                    </div>
+
+                </div>
+            </div>
+        </form>
     </div>
-    <app-signup-step1 *ngIf="step == 1"></app-signup-step1>
-    <app-signup-step2 *ngIf="step == 2"></app-signup-step2>
-</div>
+
+
+    <div class=" form d-flex row justify-content-center align-items-center" *ngIf="step === 2">
+        <form [formGroup]="form2" (ngSubmit)="chkForm2(city.value, street.value, fname.value, lname.value)">
+            <div class="row justify-content-center">
+
+                <div class="col-12 col-lg-6 col-xl-6 row d-flex">
+
+                    <div class="col-12 d-flex align-items-center justify-content-start">
+                        <mat-form-field>
+                            <mat-label>City</mat-label>
+                            <mat-select formControlName="city" #city>
+                                <mat-option *ngFor="let city of cities" [value]="city.key">
+                                    {{city.val}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-12 d-flex align-items-center justify-content-start">
+                        <mat-form-field class="w-100">
+                            <input matInput type="text"  placeholder="Street" formControlName="street" #street>
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-12 d-flex align-items-center justify-content-start">
+                        <mat-form-field class="w-100">
+                            <input matInput type="text" placeholder="First Name" #fname
+                                formControlName="fname" >
+                        </mat-form-field>
+                    </div>
+
+
+                    <div class="col-12 d-flex align-items-center justify-content-start">
+                        <mat-form-field class="w-100">
+                            <input matInput type="text" placeholder="Last Name" formControlName="lname" #lname
+                                >
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-12 d-flex align-items-center justify-content-center ">
+                        <button mat-raised-button color="primary" type="submit">Done</button>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+
+

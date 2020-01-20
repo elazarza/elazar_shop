@@ -1,7 +1,22 @@
-<div id="cartCategorys" *ngIf="ifDisplay">
-    <app-shop-cart id="cart" 
-    [cart]='cart' [totalPrice]="totalPrice" [arrItems]="arrItems" 
-    (chQuantity)="editQuant($event)" (delItem)="deleteItem($event)"></app-shop-cart>
-    <div id="resizeCart"><div (click)="resizeCart()"></div></div>
-    <app-shop-categorys id="categorys" (addItem)="addItem($event)"></app-shop-categorys>
+<div class="shop">
+
+    <app-cart style="width: 100%;" [cart]="cart" [totalPrice]="totalPrice" [cartItems]="cartItems"
+        (editQuantClicked)="editQuant($event)" (delItem)="deleteItem($event)" (delAll)="deleteAllItemsFromCart($event)"
+        (addItem)="addItem($event)"></app-cart>
+
+    <div style="position: absolute; z-index: 999; top: 50%; left: 320px " *ngIf="(opened$ | async); else closed">
+        <button mat-fab color="primary" (click)="toggleCart(false)">
+            <mat-icon>arrow_back_ios</mat-icon>
+        </button>
+
+    </div>
+
+    <ng-template #closed>
+        <div style="position: absolute; z-index: 999; top: 50%; left: -20px " >
+            <button mat-fab color="primary" (click)="toggleCart(true)">
+                <mat-icon>arrow_forward_ios</mat-icon>
+            </button>
+
+        </div>
+    </ng-template>
 </div>

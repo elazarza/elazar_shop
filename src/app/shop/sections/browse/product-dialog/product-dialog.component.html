@@ -1,0 +1,17 @@
+<div>
+    <div class="close" (click)="close()">
+        <mat-icon>clear</mat-icon>
+    </div>
+    <img src="{{url + product.img}}" style="width: 100px;">
+    <div>
+        <div class="name">{{product.prodname}}</div>
+        <div class="price">{{product.price}} ₪</div>
+        <div class="dets">
+            <span style="font-size: 2rem;margin-right: 10px">Quantity:</span>
+             <button mat-raised-button (click)="editQuant('-')" class="quant">-</button>
+            <div style="font-size:2rem; margin-right: 10px; margin-left: 10px">{{quant}}</div>
+            <button mat-raised-button (click)="editQuant('+')" class="quant">+</button>
+        </div><br>
+        <button (click)="add(product.id, quant)" mat-raised-button color="primary">Add to cart</button>
+    </div>
+</div>

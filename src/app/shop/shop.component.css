@@ -1,37 +1,5 @@
-#cartCategorys{
+.shop {
     display: flex;
     height: 100%;
 }
-#cart{
-    background-color: rgb(42, 70, 82);
-    text-align: center;
-    color: white;
-    height: 100%;
-    overflow-y: auto;
-    width: 20%;
-    min-width: 350px;
-}
-#categorys{
-    background-color: rgb(226, 226, 226);
-    height: 100%;
-    overflow-y: auto;
-    width: 100%;
-}
-#resizeCart{
-    background-color: rgb(226, 226, 226);
-}
-#resizeCart div{
-    background-color: rgb(42, 70, 82);
-    width: 40px;
-    border-radius: 0 10px 10px 0;
-    text-align: center;
-    height: 60px;
-    background-image: url('imgs/cart2.png');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 25px auto;
-}
-#resizeCart div:hover{
-    cursor: pointer;
-    background-color: rgb(71, 101, 114);
-}
+

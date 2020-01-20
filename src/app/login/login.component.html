@@ -1,0 +1,79 @@
+
+<div >
+    <div class="intro">
+        <p>Why shop with us?</p>
+        Here you will get the <b>freshest</b> products!
+        <br>
+        So start shopping today!
+
+    </div>
+</div>
+
+<div style="display: flex; justify-content: center; align-items: baseline; ">
+    <div class="form">
+
+        <form [formGroup]="form" (ngSubmit)="verifyLogin()" *ngIf="status === 'disconnected'">
+            <p>Login</p>
+
+            <div >
+                <div >
+                    <mat-form-field>
+                        <input matInput type="email" placeholder="E-mail" formControlName="email">
+                    </mat-form-field>
+                </div>
+                <div >
+                    <mat-form-field>
+                        <input matInput type="password" placeholder="password" formControlName="password"><br><br>
+                    </mat-form-field>
+                </div>
+                <div >
+                    <input type="checkbox" checked="true" formControlName="remember">
+
+                    <label for="remember">Remember me</label>
+                </div>
+                <div class="row mt-2">
+                    <button mat-raised-button color="primary" type="submit"
+                        *ngIf="status === 'disconnected'">Login</button>
+
+
+
+                </div>
+                <div >
+                    <div class="error">{{error}}</div>
+                </div>
+                <div  style="margin-top: 10px;">
+                    <div>
+                        <a [routerLink]="'/signup'">Sign up</a>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+        <button mat-raised-button color="accent" *ngIf="status === 'resume'" (click)="login()">Resume Shopping</button>
+
+        <button mat-raised-button color="accent" type="submit" *ngIf="status === 'new'" (click)="login()">Start
+            Shopping</button>
+    </div>
+
+<div class="info">
+    <p>Our store stats</p>
+    <p><span class="number"> {{totalProds[0]}}</span>
+        available products</p>
+
+    <p> <span class="number"> {{totalOrders[0]}}</span>
+        orders submitted</p>
+
+    <ng-container *ngIf="status !== 'disconnected'">
+        <div *ngIf="cartInfo && cartInfo.message; else hello" >
+            <h3>Hello {{cartInfo.name}}</h3><br>
+            <div *ngIf="cartInfo.message[0].id">You have an open cart from<br>{{cartInfo.message[0].date.split('T')[0]}}
+            </div>
+        </div>
+
+        <ng-template #hello>
+            Welcome, Enjoy your shopping!
+        </ng-template>
+    </ng-container>
+</div>
+</div>
